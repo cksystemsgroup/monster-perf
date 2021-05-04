@@ -1,0 +1,42 @@
+{
+  "lastUpdate": 1620042094,
+  "perfGroups": [
+    {
+      "name": "Example Group",
+      "charts": [
+        {
+          "name": "Example Benchmark A",
+          "units": "units of awesomeness",
+          "sets": [
+            {
+              "label": "Example Data-Set #1"
+            },
+            {
+              "label": "Example Data-Set #2"
+            }
+          ],
+          "points": [
+            {
+              "label": "d76397ea",
+              "data": [20, 19]
+            },
+            {
+              "label": "13f75f82",
+              "data": [22, 17]
+            },
+            {
+              "label": "a07bc19d",
+              "data": [21, 16]
+            }
+          ]
+        },
+        {
+          "name": "Example Benchmark B",
+          "units": "units of correctness",
+          "sets": [],
+          "points": []
+        }
+      ]
+    }
+  ]
+}

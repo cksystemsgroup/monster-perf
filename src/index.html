@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Monster Performance Dashboard</title>
+    <meta name="author" content="Monsters at Computational Systems Group">
+    <meta name="description" content="Performance dashboard for the Monster symbolic execution engine">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      /* CSS to be placed here */
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script type="text/javascript">
+      'use strict';
+      (function() {
+        window.addEventListener('load', init);
+
+        /** Initialize dashboard by fetching all performance data. */
+        function init() {
+          fetch("data.json")
+            .then(response => response.json())
+            .then(json => guiAddAll(json));
+        }
+
+        /** Add all charts in `data` to the dashboard. */
+        function guiAddAll(data) {
+          let main = document.getElementById('main');
+          for (let group of data.perfGroups) {
+            guiAddGroup(group, main);
+          }
+        }
+
+        /** Add one `group` of charts to the `main` DOM element. */
+        function guiAddGroup(group, main) {
+          let domGroup = document.createElement('div');
+          domGroup.className = 'perf-group';
+          main.appendChild(domGroup);
+
+          let domTitle = document.createElement('h2');
+          domTitle.className = 'perf-title';
+          domTitle.textContent = group.name;
+          domGroup.appendChild(domTitle);
+
+          let domCharts = document.createElement('div');
+          domCharts.className = 'perf-charts';
+          domGroup.appendChild(domCharts);
+
+          for (let chart of group.charts) {
+            guiAddChart(chart, domCharts);
+          }
+        }
+
+        /** Add one `chart` to the `domCharts` DOM element. */
+        function guiAddChart(chart, domCharts) {
+          let domCanvas = document.createElement('canvas');
+          domCanvas.className = 'perf-canvas';
+          domCharts.appendChild(domCanvas);
+
+          let colors = [
+            '#3366cc', '#dc3912', '#ff9900', '#109618', '#990099'
+          ];
+
+          let data = {
+            labels: chart.points.map(p => p.label),
+            datasets: chart.sets.map((s, index) => ({
+              label: s.label + ' / ' + chart.name,
+              data: chart.points.map(p => p.data[index]),
+              borderColor: colors[index],
+              fill: false,
+            }))
+          };
+
+          let options = {
+            scales: {
+              yAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString: chart.units,
+                  },
+                  ticks: {
+                    beginAtZero: true,
+                  }
+                }
+              ]
+            }
+          };
+
+          let config = {
+            type: 'line',
+            data,
+            options,
+          };
+
+          return new Chart(domCanvas, config);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Monster Performance Dashboard</h1>
+    </header>
+    <main id="main"></main>
+    <footer>
+    </footer>
+  </body>
+</html>
