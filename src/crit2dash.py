@@ -83,6 +83,12 @@ for (groupname, group) in sorted(estimates.items()):
     perf.append({ 'name': groupname, 'charts': charts })
 
 # Serialize performance data into JSON format.
-data = { 'lastUpdate': int(time.time()), 'perfGroups': perf }
+meta = { sha[0:8]: { 'message': commit['message'],
+                     'timestamp': commit['timestamp'],
+                     'author': commit['author']['name'] }
+             for (sha, commit) in time_sorted }
+data = { 'lastUpdate': int(time.time()),
+         'perfGroups': perf,
+         'commitMetadata': meta }
 with open(args.output, 'w') as outfile:
     json.dump(data, outfile)
