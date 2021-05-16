@@ -51,6 +51,19 @@ for sha in commits.keys():
             data = json.load(jsonfile)
             line[sha] = data['median']['point_estimate']
 
+# Determines the measurement unit best suited for all values in the
+# given `pointset` (with time measurements in nanoseconds). Returns the
+# appropriate unit name and divisor.
+def normalized_unit(pointset):
+    units = [("seconds (s)", 1000*1000*1000),
+             ("millis (ms)", 1000*1000),
+             ("micros (us)", 1000),
+             ("nanos (ns)", 1)]
+    minimal_point = min(map(min, pointset.values()));
+    for (unit_name, unit_divisor) in units:
+        if minimal_point > unit_divisor:
+            return (unit_name, unit_divisor)
+
 # Crunch the loaded data into a format that is easier to handle on the
 # client-side. This produces a `perf` array meant to be serialized into
 # JSON and be loaded by the JavaScript counterpart on the dashboard.
@@ -61,7 +74,6 @@ for sha in commits.keys():
 # trade-off between the size of data transmitted and the time spent on
 # computation on the client. This boundary is fluid.
 perf = []
-units = "units of awesomeness"
 time_sorted = sorted(commits.items(), key=lambda x: x[1]['timestamp'])
 for (groupname, group) in sorted(estimates.items()):
     charts = [];
@@ -72,12 +84,14 @@ for (groupname, group) in sorted(estimates.items()):
             for (pointname, point) in line.items():
               p = pointset.setdefault(pointname, [])
               p.insert(len(lines) - 1, point)
+        (unitname, divisor) = normalized_unit(pointset)
         for (sha, commit) in time_sorted:
             if pointset.get(sha):
+                data = [x / divisor for x in pointset[sha]]
                 points.append({ 'label': sha[0:8],
-                                'data': pointset[sha]})
+                                'data': data})
         charts.append({ 'name': chartname,
-                        'units': units,
+                        'units': unitname,
                         'sets': lines,
                         'points': points })
     perf.append({ 'name': groupname, 'charts': charts })
