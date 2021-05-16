@@ -1,0 +1,25 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - data
+
+jobs:
+  deploy:
+    name: Deploy Performance Dashboard
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Data
+        uses: actions/checkout@v2
+      - name: Build Everything
+        run: make clean build
+      - name: Deploy Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: pages
+          publish_dir: ./target
+          force_orphan: true
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"

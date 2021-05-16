@@ -5,8 +5,7 @@
 
 build:
 	mkdir -p target
-	# TODO: Switch to `cp src/index.html target` instead.
-	ln -s -f ../src/index.html target/index.html
+	cp src/index.html target/index.html
 	src/crit2dash.py --source=data --output=target/data.json
 
 serve: build
