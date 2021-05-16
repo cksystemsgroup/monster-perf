@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,541564514.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,541712631.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,542384117.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,722362649.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,781054550.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,780812211.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,585457525.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,541525760.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,541739148.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-fibonacci-1-10.c,,,541895869.0,ns,1
