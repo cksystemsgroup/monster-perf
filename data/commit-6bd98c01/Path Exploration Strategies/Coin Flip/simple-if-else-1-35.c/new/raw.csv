@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,67477504.0,ns,1
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,281279635.0,ns,2
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,306792109.0,ns,3
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,415969475.0,ns,4
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,525492384.0,ns,5
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,655693995.0,ns,6
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,639100001.0,ns,7
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,832356090.0,ns,8
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,1046350394.0,ns,9
+Path Exploration Strategies,Coin Flip,simple-if-else-1-35.c,,,1218325800.0,ns,10

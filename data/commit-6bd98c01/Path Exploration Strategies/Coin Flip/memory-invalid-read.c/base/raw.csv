@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,90950324.0,ns,472
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,181956692.0,ns,944
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,272838731.0,ns,1416
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,363767666.0,ns,1888
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,454750555.0,ns,2360
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,545658855.0,ns,2832
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,636705563.0,ns,3304
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,727751119.0,ns,3776
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,818509818.0,ns,4248
+Path Exploration Strategies,Coin Flip,memory-invalid-read.c,,,909514219.0,ns,4720
