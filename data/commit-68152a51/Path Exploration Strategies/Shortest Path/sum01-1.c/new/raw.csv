@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1020042038.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1020137844.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019534547.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019164494.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019262575.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019512634.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019563502.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019073687.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019566580.0,ns,1
+Path Exploration Strategies,Shortest Path,sum01-1.c,,,1019465100.0,ns,1
