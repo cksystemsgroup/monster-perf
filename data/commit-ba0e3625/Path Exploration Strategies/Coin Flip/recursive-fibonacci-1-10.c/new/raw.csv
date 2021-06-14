@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,2085459099.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,1758096471.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,2083326246.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,502713171.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,1903890756.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,1939770941.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,2020035194.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,484194505.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,2018531286.0,ns,1
+Path Exploration Strategies,Coin Flip,recursive-fibonacci-1-10.c,,,362251006.0,ns,1

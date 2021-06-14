@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,128320494.0,ns,1
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,256649787.0,ns,2
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,385170482.0,ns,3
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,513414935.0,ns,4
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,641710938.0,ns,5
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,770473847.0,ns,6
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,898732339.0,ns,7
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,1026664019.0,ns,8
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,1155238661.0,ns,9
+Path Exploration Strategies,Shortest Path,recursive-ackermann-1-35.c,,,1283512886.0,ns,10
