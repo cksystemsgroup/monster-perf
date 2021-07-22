@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Monster Performance Dashboard</title>
+    <meta name="author" content="Monsters at Computational Systems Group">
+    <meta name="description" content="Performance dashboard for the Monster symbolic execution engine">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        font-family: BlinkMacSystemFont,Roboto,Oxygen,Ubuntu,Cantarell,Helvetica,Arial,sans-serif;
+        margin: 0px auto;
+        width: 80%;
+      }
+      h1 {
+        background-color: #dddddd;
+        border-radius: 12px;
+        margin: 16px 0px;
+        padding: 8px;
+        text-align: center;
+      }
+      h2.perf-title {
+        font-size: 120%;
+        font-weight: 500;
+        margin: 0px;
+        padding: 8px;
+        background-color: #dddddd;
+      }
+      h3.perf-chart {
+        font-size: 120%;
+        font-weight: 500;
+        margin: 12px 8px 0px;
+      }
+      div.perf-group {
+        border: 2px solid #dddddd;
+        border-radius: 12px;
+        margin: 16px 0px;
+        overflow: hidden;
+      }
+      div.perf-charts {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      div.perf-chart {
+        position: relative;
+        max-width: 600px;
+        width: 100%;
+      }
+      div#overlay {
+        background-color: #dddddd;
+        border: 2px solid #777777;
+        border-radius: 12px;
+        font-size: 80%;
+        max-width: 60%;
+        padding: 12px;
+        position: absolute;
+        left:50%; top:50%;
+        transform: translate(-50%,-50%);
+        visibility: hidden;
+      }
+      div#overlay div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      div#footer {
+        background-color: #dddddd;
+        border-radius: 12px;
+        font-size: 60%;
+        padding: 8px;
+        text-align: center;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script type="text/javascript">
+      'use strict';
+      (function() {
+        window.addEventListener('load', init);
+
+        /** Base URL of the Monster project on GitHub. */
+        let githubBase = "https://github.com/cksystemsgroup/monster";
+
+        /** Metadata about all commits by sha[0:8] for lookup. */
+        let commitMetadata = null;
+
+        /** Initialize dashboard by fetching all performance data. */
+        function init() {
+          fetch("data.json")
+            .then(response => response.json())
+            .then(json => guiAddAll(json));
+        }
+
+        /** Add all charts in `data` to the dashboard. */
+        function guiAddAll(data) {
+          let updated = document.getElementById('updated');
+          let lastUpdateDate = new Date(data.lastUpdate * 1000);
+          updated.textContent = lastUpdateDate.toISOString();
+          commitMetadata = data.commitMetadata;
+          let main = document.getElementById('main');
+          for (let group of data.perfGroups) {
+            guiAddGroup(group, main);
+          }
+        }
+
+        /** Add one `group` of charts to the `main` DOM element. */
+        function guiAddGroup(group, main) {
+          let domGroup = document.createElement('div');
+          domGroup.className = 'perf-group';
+          main.appendChild(domGroup);
+
+          let domTitle = document.createElement('h2');
+          domTitle.className = 'perf-title';
+          domTitle.textContent = group.name;
+          if (group.name) domGroup.appendChild(domTitle);
+
+          let domCharts = document.createElement('div');
+          domCharts.className = 'perf-charts';
+          domGroup.appendChild(domCharts);
+
+          for (let chart of group.charts) {
+            guiAddChart(chart, group, domCharts);
+          }
+        }
+
+        /** Add one `chart` to the `domCharts` DOM element. */
+        function guiAddChart(chart, group, domCharts) {
+          let domChart = document.createElement('div');
+          domChart.className = 'perf-chart';
+          domCharts.appendChild(domChart);
+
+          let domTitle = document.createElement('h3');
+          domTitle.className = 'perf-chart';
+          domTitle.textContent = chart.name;
+          domChart.appendChild(domTitle);
+
+          let domCanvas = document.createElement('canvas');
+          domCanvas.className = 'perf-canvas';
+          domChart.appendChild(domCanvas);
+
+          // The index of the data-set for which a tooltip is currently
+          // being displayed (i.e. by hovering the cursor over it), or
+          // some negative value in case no tooltip is active.
+          let currentDatasetIndex = -1;
+
+          let colors = [
+            '#3366cc', '#dc3912', '#ff9900', '#109618', '#990099'
+          ];
+
+          let data = {
+            labels: chart.points.map(p => p.label),
+            datasets: chart.sets.map((s, index) => ({
+              label: s.label,
+              data: chart.points.map(p => p.data[index]),
+              borderColor: colors[index],
+              fill: false,
+            }))
+          };
+
+          let options = {
+            tooltips: {
+              custom: function(tooltipModel) {
+                let dp = tooltipModel.dataPoints;
+                currentDatasetIndex = dp ? dp[0].datasetIndex : -1;
+              }
+            },
+            onClick: function(event, active) {
+              let domOverlay = document.getElementById('overlay');
+              let domLinkG = document.getElementById('overlay-github');
+              let domLinkD = document.getElementById('overlay-details');
+              let domLinkC = document.getElementById('overlay-compare');
+              let domLinkF = document.getElementById('overlay-full');
+              let domDivD = domLinkD.parentNode;
+              let domDivC = domLinkC.parentNode;
+              let domSpanM = document.getElementById('overlay-message');
+              let domSpanT = document.getElementById('overlay-time');
+              let domSpanA = document.getElementById('overlay-author');
+
+              if (active.length > 0) {
+                // To determine the commit SHA any active point will
+                // suffice, no need to rely on `currentDatasetIndex`.
+                let s = chart.points[active[0]._index].label;
+                let g = group.name; let l = chart.name;
+                let c = (currentDatasetIndex < 0) ? null :
+                        chart.sets[currentDatasetIndex].label;
+                let base = `data/commit-${s}`;
+                domLinkG.textContent = `monster/${s}`;
+                domLinkG.href = `${githubBase}/commit/${s}`
+                domLinkD.textContent = `data/${c}/${l}`;
+                domLinkD.href = `${base}/${g}/${c}/${l}/report`;
+                domDivD.style.display = c ? 'inherit' : 'none';
+                domLinkC.textContent = `data/${l}`;
+                domLinkC.href = `${base}/${g}/${l}/report`;
+                domDivC.style.display = g ? 'inherit' : 'none';
+                domLinkF.textContent = `data/commit-${s}`;
+                domLinkF.href = `${base}/report`;
+                domSpanM.textContent = commitMetadata[s].message;
+                domSpanT.textContent = commitMetadata[s].timestamp;
+                domSpanA.textContent = commitMetadata[s].author;
+                domChart.appendChild(domOverlay);
+                domOverlay.style.visibility = 'visible';
+              } else {
+                domOverlay.style.visibility = 'hidden';
+              }
+            },
+            scales: {
+              yAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString: chart.units,
+                  },
+                  ticks: {
+                    beginAtZero: true,
+                  }
+                }
+              ]
+            }
+          };
+
+          let config = {
+            type: 'line',
+            data,
+            options,
+          };
+
+          return new Chart(domCanvas, config);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Monster Performance Dashboard</h1>
+    </header>
+    <main id="main">
+      <div id="overlay">
+        <div>Message: <span id="overlay-message"></span></div>
+        <div>Timestamp: <span id="overlay-time"></span></div>
+        <div>Author: <span id="overlay-author"></span></div>
+        <br>
+        <div>Criterion Details: <a href="" id="overlay-details"></a></div>
+        <div>Criterion Compare: <a href="" id="overlay-compare"></a></div>
+        <div>Criterion Full: <a href="" id="overlay-full"></a></div>
+        <div>Commit: <a href="" id="overlay-github"></a></div>
+      </div>
+    </main>
+    <footer>
+      <div id="footer">
+        &copy; Computational Systems Group 2021 |
+        [<a href="https://github.com/cksystemsgroup/monster-perf">source</a>] |
+        [<a href="https://github.com/cksystemsgroup/monster">monster</a>] |
+        Updated: <span id="updated">never</span>
+      </div>
+    </footer>
+  </body>
+</html>
